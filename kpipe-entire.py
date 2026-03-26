@@ -53,6 +53,13 @@ def load_and_preprocess_kaggle_data(expression_file, clinical_file):
     print("🧬 Merging genetic data with clinical labels...")
     merged_df = pd.merge(df_expr, df_clin, on='Sample_ID', how='inner')
     
+    # ⚠️ AIA'S CLEANUP FIX: Purge any patient missing a subtype label!
+    initial_len = len(merged_df)
+    merged_df = merged_df.dropna(subset=['Subtype'])
+    if len(merged_df) < initial_len:
+        print(f"   🧹 Purged {initial_len - len(merged_df)} patients due to missing (NaN) clinical labels.")
+    
+    # Now we can safely extract our clean targets and features
     y = merged_df['Subtype'].values
     X_df = merged_df.drop(columns=['Sample_ID', 'Subtype'])
     X_df = X_df.apply(pd.to_numeric, errors='coerce').fillna(0)
@@ -144,7 +151,7 @@ def main_pipeline_multiclass(expression_filepath, clinical_filepath, target_subt
         
         y_binary = (y_multiclass == subtype).astype(int)
         
-        # Check if the subtype exists in the data
+        # Check if the subtype exists in the datadrop
         if sum(y_binary) == 0:
             print(f"⚠️ WARNING: Subtype '{subtype}' not found in data. Skipping.")
             continue
@@ -210,6 +217,6 @@ if __name__ == "__main__":
     
     # Provide the exact strings of all 4 subtypes you wish to classify
     # (Adjust spelling if they differ slightly in your CSV, e.g., 'BRCA_Basal')
-    target_subtypes = ['BRCA_LumA', 'BRCA_LumB', 'BRCA_Her', 'BRCA_Normal']
+    target_subtypes = ['BRCA_LumA', 'BRCA_LumB', 'BRCA_Her2', 'BRCA_Normal', 'BRCA_Basal']
     
     final_master_genes = main_pipeline_multiclass(expr_file, clin_file, target_subtypes)
