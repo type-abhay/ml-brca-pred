@@ -20,7 +20,7 @@ warnings.filterwarnings("ignore")
 # 0. SCANNING FILES
 # ==========================================
 print("🔍 Scanning Kaggle Input Directory...")
-for dirname, _, filenames in os.walk('/kaggle/input'):
+for dirname, _, filenames in os.walk('tcga-data/'):
     for filename in filenames:
         print(os.path.join(dirname, filename))
 print("-" * 50)
