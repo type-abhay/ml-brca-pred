@@ -1,8 +1,3 @@
 tcga-data
-output.txt
-op.txt
-BRCA_Omni_MultiClass_SVM.pkl
-BRCA_Omni_Genes.npy
-BRCA_LumA_svm_model.pkl
-kpipe-entire.py
-kpipe(LumA).py
+archives/
+training/tcga-data/
