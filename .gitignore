@@ -1,3 +1,6 @@
 tcga-data
 archives/
 training/tcga-data/
+training/plots-old/
+backend/extractor.py
+backend/check.py

@@ -52,14 +52,11 @@ function App() {
     setLoading(false);
   };
 
-  // ⚠️ NEW FEATURE: Generate and download a blank CSV template
   const downloadTemplate = () => {
-    // Creates a single row of comma-separated gene names
     const csvContent = geneInfo.join(',');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     
-    // Programmatically trigger a hidden download link
     const link = document.createElement('a');
     link.setAttribute('href', url);
     link.setAttribute('download', 'brca_diagnostic_template.csv');
@@ -71,6 +68,7 @@ function App() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
       
+      {/* Subtle background glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-white/5 rounded-full blur-[120px] pointer-events-none"></div>
 
       <div className="z-10 w-full max-w-2xl">
@@ -86,7 +84,7 @@ function App() {
           
           <div className="flex flex-col md:flex-row items-center gap-4 w-full">
             
-            {/* Upload Button - Removed italics/font-editorial, using crisp sans-serif */}
+            {/* Upload Button */}
             <label className="flex-1 w-full cursor-pointer group">
               <div className="h-16 flex items-center justify-center border-2 border-dashed border-white/20 rounded-xl group-hover:border-white/50 group-hover:bg-white/5 transition-all duration-300">
                 <span className="text-lg font-semibold tracking-wide text-white/90 group-hover:text-white">Upload CSV Array</span>
@@ -94,7 +92,7 @@ function App() {
               <input type="file" accept=".csv" className="hidden" onChange={handleFileUpload} />
             </label>
 
-            {/* Demo Button - Removed italics/font-editorial, using crisp sans-serif */}
+            {/* Demo Button */}
             <button 
               onClick={handleDemo}
               className="flex-1 w-full h-16 bg-white text-black rounded-xl hover:bg-gray-200 transition-colors duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)] text-lg font-semibold tracking-wide"
@@ -129,7 +127,7 @@ function App() {
 
         {/* Results Dashboard */}
         {results && (
-          <div className="glass-panel rounded-3xl p-8 transition-opacity duration-500 opacity-100">
+          <div className="glass-panel rounded-3xl p-8 animate-fade-in">
             <h2 className="text-sm tracking-widest uppercase text-white/40 mb-2">Final Diagnosis</h2>
             <div className="font-editorial text-4xl mb-8 border-b border-white/10 pb-6">
               {results.diagnosis.replace('_', ' ')}
@@ -185,9 +183,8 @@ function App() {
 
         <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-8">
           
-          {/* Visual Bug Fixed: Removed the CSS animation that caused the leftward shift */}
           {snackbarData && (
-            <div>
+            <div className="animate-fade-in-up">
               <h4 className="text-[11px] text-white/50 uppercase tracking-widest mb-3 font-bold">Generated Demo Sequence</h4>
               <div className="bg-black/40 p-4 rounded-xl font-mono text-xs text-white/80 break-words leading-relaxed border border-white/5 shadow-inner">
                 [{snackbarData.map(val => val.toFixed(4)).join(', ')}]
@@ -204,7 +201,6 @@ function App() {
               {geneInfo.join(', ')}
             </div>
 
-            {/* ⚠️ NEW FEATURE: Download Template Button */}
             <button 
               onClick={downloadTemplate}
               className="w-full flex items-center justify-center gap-2 py-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl transition-colors duration-300 text-sm font-semibold tracking-wide"
